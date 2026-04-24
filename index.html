@@ -170,8 +170,14 @@
     <div class="section-title">Effects Style Transfer Demo</div>
 
     <p style="margin-bottom:20px; color:#555; font-size:0.95em;">
-        Given a <strong>source</strong> dry signal and a <strong>reference</strong> wet signal (with desired effects), 
-        the model encodes both and reconstructs the source with the reference's effect style.
+        Audio effect (Fx) representation learning plays a key role in intelligent music production, including automatic mixing and effect style transfer.
+        Existing methods typically rely on effect removal techniques to obtain pseudo-dry references for effect modeling, yet truly dry audio is practically unattainable—any real recording inherently contains artifacts from microphones, room acoustics, and pre-processing.
+        Instead of pursuing absolute effect encodings, we argue that the <em>relative effect distance</em> between audio signals is more meaningful for real-world music production.
+        Motivated by this, we propose a contrastive learning framework that learns effect representations from arbitrary audio pairs, eliminating the need for dry references entirely.
+        Our approach uses a dual-branch Siamese encoder equipped with cross-attention and differential gating fusion to explicitly model the transformation between a reference signal and its processed version.
+        Built upon this relative formulation, we further introduce an antisymmetric fusion variant that naturally supports <em>bidirectional</em> effect encoding—swapping the input order directly produces an inverse transformation embedding, a capability that dry-reference-based methods fundamentally lack.
+        Moreover, our dry-free formulation allows training on arbitrary audio data, lifting the constraint of multi-track datasets.
+        Experiments on effects style transfer demonstrate that our method consistently outperforms existing approaches across all evaluated instrument categories.
     </p>
 
     <div class="demo-card">
