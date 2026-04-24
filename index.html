@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relative-FX: Audio Effects Style Transfer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a2e;
+            background: #fafafa;
+            line-height: 1.6;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px 30px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.85;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .demo-label {
+            font-size: 0.95em;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .demo-song {
+            font-size: 1.15em;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a1a2e;
+        }
+
+        .audio-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .audio-col {
+            text-align: center;
+        }
+
+        .audio-col .label {
+            font-size: 0.82em;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .audio-col .sublabel {
+            font-size: 0.72em;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        .audio-col audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+
+        .arrow-col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: #bbb;
+        }
+
+        .highlight-box {
+            background: #e8f5e9;
+            border-radius: 8px;
+            padding: 4px 8px;
+        }
+
+        .highlight-box .label {
+            color: #2e7d32;
+        }
+
+        .gt-box {
+            background: #e3f2fd;
+            border-radius: 8px;
+            padding: 4px 8px;
+        }
+
+        .gt-box .label {
+            color: #1565c0;
+        }
+
+        .method-desc {
+            font-size: 0.85em;
+            color: #777;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #999;
+            font-size: 0.85em;
+        }
+
+        @media (max-width: 900px) {
+            .audio-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .audio-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 { font-size: 1.5em; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Relative-FX</h1>
+    <p>Learning Bidirectional Audio Effect Embeddings via Contrastive Style Transfer</p>
+</div>
+
+<div class="container">
+
+    <div class="section-title">Effects Style Transfer Demo</div>
+
+    <p style="margin-bottom:20px; color:#555; font-size:0.95em;">
+        Given a <strong>source</strong> dry signal and a <strong>reference</strong> wet signal (with desired effects), 
+        the model encodes both and reconstructs the source with the reference's effect style.
+    </p>
+
+    <div class="demo-card">
+        <div class="demo-song">Example 1 — Chorus Section</div>
+
+        <div class="audio-grid">
+            <div class="audio-col">
+                <div class="label">Source (Dry)</div>
+                <div class="sublabel">Clean input signal</div>
+                <audio controls preload="none">
+                    <source src="audio/ex1_source_dry.wav" type="audio/wav">
+                </audio>
+            </div>
+
+            <div class="audio-col">
+                <div class="label">Reference (Wet)</div>
+                <div class="sublabel">Target effect style</div>
+                <audio controls preload="none">
+                    <source src="audio/ex1_reference_wet.wav" type="audio/wav">
+                </audio>
+            </div>
+
+            <div class="audio-col gt-box">
+                <div class="label">Ground Truth</div>
+                <div class="sublabel">Source + reference FX params</div>
+                <audio controls preload="none">
+                    <source src="audio/ex1_target_gt.wav" type="audio/wav">
+                </audio>
+            </div>
+
+            <div class="audio-col highlight-box">
+                <div class="label">Ours</div>
+                <div class="sublabel">Predicted FX params</div>
+                <audio controls preload="none">
+                    <source src="audio/ex1_styled_output.wav" type="audio/wav">
+                </audio>
+            </div>
+
+            <div class="audio-col">
+                <div class="label">Reference (Dry)</div>
+                <div class="sublabel">Reference clean signal</div>
+                <audio controls preload="none">
+                    <source src="audio/ex1_reference_dry.wav" type="audio/wav">
+                </audio>
+            </div>
+        </div>
+
+        <div class="method-desc">
+            The model takes the source dry signal and reference wet signal, encodes their effect relationship, 
+            and predicts the effect chain parameters to apply to the source.
+        </div>
+    </div>
+
+    <!-- More examples can be added here -->
+
+</div>
+
+<footer>
+    Submitted to ISMIR 2026 — Anonymous Submission
+</footer>
+
+</body>
+</html>
