@@ -6,434 +6,73 @@
     <title>Relative-FX: Audio Effects Style Transfer</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            color: #1a1a2e;
-            background: #fafafa;
-            line-height: 1.6;
-        }
-
-        .header {
-            text-align: center;
-            padding: 40px 20px 30px;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: white;
-        }
-
-        .header h1 {
-            font-size: 2em;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.85;
-            max-width: 650px;
-            margin: 0 auto;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        .abstract {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            padding: 24px 28px;
-            margin-bottom: 24px;
-            font-size: 0.93em;
-            color: #444;
-            line-height: 1.7;
-        }
-
-        .abstract em {
-            font-style: italic;
-            color: #1a1a2e;
-        }
-
-        .section-title {
-            font-size: 1.4em;
-            font-weight: 600;
-            margin: 36px 0 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .subsection-title {
-            font-size: 1.15em;
-            font-weight: 600;
-            margin: 24px 0 10px;
-            color: #333;
-        }
-
-        .demo-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-
-        .demo-song {
-            font-size: 1.1em;
-            font-weight: 600;
-            margin-bottom: 14px;
-            color: #1a1a2e;
-        }
-
-        .demo-tag {
-            display: inline-block;
-            font-size: 0.7em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-
-        .tag-self-ref {
-            background: #e3f2fd;
-            color: #1565c0;
-        }
-
-        .tag-oracle {
-            background: #fce4ec;
-            color: #c62828;
-        }
-
-        .tag-standard {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .tag-compare {
-            background: #f3e5f5;
-            color: #7b1fa2;
-        }
-
-        .audio-grid-5 {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 14px;
-        }
-
-        .audio-grid-6 {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 12px;
-        }
-
-        .audio-col {
-            text-align: center;
-        }
-
-        .audio-col .label {
-            font-size: 0.8em;
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .audio-col .sublabel {
-            font-size: 0.7em;
-            color: #999;
-            margin-bottom: 6px;
-        }
-
-        .audio-col audio {
-            width: 100%;
-            height: 36px;
-            border-radius: 6px;
-        }
-
-        .highlight-box {
-            background: #e8f5e9;
-            border-radius: 8px;
-            padding: 4px 8px;
-        }
-
-        .highlight-box .label { color: #2e7d32; }
-
-        .gt-box {
-            background: #e3f2fd;
-            border-radius: 8px;
-            padding: 4px 8px;
-        }
-
-        .gt-box .label { color: #1565c0; }
-
-        .baseline-box {
-            background: #fff3e0;
-            border-radius: 8px;
-            padding: 4px 8px;
-        }
-
-        .baseline-box .label { color: #e65100; }
-
-        .method-desc {
-            font-size: 0.82em;
-            color: #777;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #eee;
-        }
-
-        .ld-badge {
-            display: inline-block;
-            font-size: 0.75em;
-            font-weight: 600;
-            padding: 1px 6px;
-            border-radius: 3px;
-            background: #e8f5e9;
-            color: #2e7d32;
-            margin-left: 6px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            color: #999;
-            font-size: 0.85em;
-        }
-
-        @media (max-width: 900px) {
-            .audio-grid-5 { grid-template-columns: repeat(3, 1fr); }
-            .audio-grid-6 { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        @media (max-width: 600px) {
-            .audio-grid-5, .audio-grid-6 { grid-template-columns: 1fr; }
-            .header h1 { font-size: 1.5em; }
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", 'Noto Sans SC', sans-serif; background: #0f0f0f; color: #e0e0e0; line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        h1 { font-size: 2.2em; margin-bottom: 10px; color: #fff; }
+        .subtitle { color: #aaa; font-size: 0.95em; margin-bottom: 30px; }
+        .section-title { font-size: 1.4em; margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid #333; color: #ddd; }
+        .demo-card { background: #1a1a1a; border-radius: 8px; padding: 15px; margin-bottom: 18px; }
+        .demo-song { font-weight: 600; margin-bottom: 8px; color: #ccc; }
+        .audio-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+        .audio-col { flex: 1 1 180px; min-width: 140px; }
+        .label { font-size: 0.85em; color: #999; margin-bottom: 4px; }
+        audio { width: 100%; }
+        .ld-badge { font-size: 0.8em; color: #6f6; margin-left: 8px; }
+        .tag { font-size: 0.75em; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+        .tag-self { background: #1a3a5a; color: #a5d6a；}
+        .tag-oracle { background: #2a1a3a; color: #6fa56；}
+        .tag-compare { background: #1a2a5a; color: #56a6a；}
     </style>
 </head>
 <body>
-
-<div class="header">
-    <h1>Relative-FX</h1>
-    <p>Learning Bidirectional Audio Effect Embeddings via Contrastive Style Transfer</p>
-</div>
-
 <div class="container">
-
-    <div class="abstract">
-        Audio effect (Fx) representation learning plays a key role in intelligent music production, including automatic mixing and effect style transfer.
-        Existing methods typically rely on effect removal techniques to obtain pseudo-dry references for effect modeling, yet truly dry audio is practically unattainable—any real recording inherently contains artifacts from microphones, room acoustics, and pre-processing.
-        Instead of pursuing absolute effect encodings, we argue that the <em>relative effect distance</em> between audio signals is more meaningful for real-world music production.
-        Motivated by this, we propose a contrastive learning framework that learns effect representations from arbitrary audio pairs, eliminating the need for dry references entirely.
-        Our approach uses a dual-branch Siamese encoder equipped with cross-attention and differential gating fusion to explicitly model the transformation between a reference signal and its processed version.
-        Built upon this relative formulation, we further introduce an antisymmetric fusion variant that naturally supports <em>bidirectional</em> effect encoding—swapping the input order directly produces an inverse transformation embedding, a capability that dry-reference-based methods fundamentally lack.
-        Moreover, our dry-free formulation allows training on arbitrary audio data, lifting the constraint of multi-track datasets.
-        Experiments on effects style transfer demonstrate that our method consistently outperforms existing approaches across all evaluated instrument categories.
-    </div>
+    <h1>Relative-FX: Audio Effects Style Transfer</h1>
+    <div class="subtitle">ISMIR 2026 | <a href="https://github.com/relative-fx/relative-fx.github.io" style="color:#6f6;">GitHub</a></div>
 
     <!-- ============ Section 1: Self-Ref (Absolute) ============ -->
-    <div class="section-title">Self-Reference Mode</div>
-    <p style="margin-bottom:16px; color:#555; font-size:0.9em;">
-        In Self-ref mode, the reference embedding is computed as <strong>E(proc(B), proc(B))</strong> — a "zero-change" encoding of the processed reference signal.
-        The optimization then matches <strong>E(Â, proc(B))</strong> → reference, where Â = FX(A, θ).
-        This mode requires only the wet reference, comparable to prior work.
-    </p>
+    <div class="section-title">Self-Ref (Absolute) — E(proc(B), proc(B))</div>
 
-    <!-- Example 1: Self-ref, Ld=0.19 -->
     <div class="demo-card">
-        <div class="demo-song">Example 1 <span class="demo-tag tag-self-ref">Self-Ref</span> <span class="ld-badge">Ld 0.19</span></div>
-        <div class="audio-grid-5">
-            <div class="audio-col">
-                <div class="label">Source (Dry)</div>
-                <div class="sublabel">Clean input</div>
-                <audio controls preload="none"><source src="audio/ex1_source_dry.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Wet)</div>
-                <div class="sublabel">Target effect style</div>
-                <audio controls preload="none"><source src="audio/ex1_reference_wet.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col gt-box">
-                <div class="label">Ground Truth</div>
-                <div class="sublabel">Source + true FX params</div>
-                <audio controls preload="none"><source src="audio/ex1_target_gt.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col highlight-box">
-                <div class="label">Ours</div>
-                <div class="sublabel">Predicted FX params</div>
-                <audio controls preload="none"><source src="audio/ex1_styled_output.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Dry)</div>
-                <div class="sublabel">Reference clean signal</div>
-                <audio controls preload="none"><source src="audio/ex1_reference_dry.wav" type="audio/wav"></audio>
-            </div>
-        </div>
-    </div>
-
-    <!-- Example 2: Self-ref, Ld=0.24 -->
-    <div class="demo-card">
-        <div class="demo-song">Example 2 <span class="demo-tag tag-self-ref">Self-Ref</span> <span class="ld-badge">Ld 0.24</span></div>
-        <div class="audio-grid-5">
-            <div class="audio-col">
-                <div class="label">Source (Dry)</div>
-                <div class="sublabel">Clean input</div>
-                <audio controls preload="none"><source src="audio/ex2_source_dry.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Wet)</div>
-                <div class="sublabel">Target effect style</div>
-                <audio controls preload="none"><source src="audio/ex2_reference_wet.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col gt-box">
-                <div class="label">Ground Truth</div>
-                <div class="sublabel">Source + true FX params</div>
-                <audio controls preload="none"><source src="audio/ex2_target_gt.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col highlight-box">
-                <div class="label">Ours</div>
-                <div class="sublabel">Predicted FX params</div>
-                <audio controls preload="none"><source src="audio/ex2_styled_output.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Dry)</div>
-                <div class="sublabel">Reference clean signal</div>
-                <audio controls preload="none"><source src="audio/ex2_reference_dry.wav" type="audio/wav"></audio>
-            </div>
-        </div>
-    </div>
-
-    <!-- Example 3: Self-ref, Ld=0.28 -->
-    <div class="demo-card">
-        <div class="demo-song">Example 3 <span class="demo-tag tag-self-ref">Self-Ref</span> <span class="ld-badge">Ld 0.28</span></div>
-        <div class="audio-grid-5">
-            <div class="audio-col">
-                <div class="label">Source (Dry)</div>
-                <div class="sublabel">Clean input</div>
-                <audio controls preload="none"><source src="audio/ex3_source_dry.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Wet)</div>
-                <div class="sublabel">Target effect style</div>
-                <audio controls preload="none"><source src="audio/ex3_reference_wet.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col gt-box">
-                <div class="label">Ground Truth</div>
-                <div class="sublabel">Source + true FX params</div>
-                <audio controls preload="none"><source src="audio/ex3_target_gt.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col highlight-box">
-                <div class="label">Ours</div>
-                <div class="sublabel">Predicted FX params</div>
-                <audio controls preload="none"><source src="audio/ex3_styled_output.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Dry)</div>
-                <div class="sublabel">Reference clean signal</div>
-                <audio controls preload="none"><source src="audio/ex3_reference_dry.wav" type="audio/wav"></audio>
-            </div>
+        <div class="demo-song">Example 1 <span class="tag tag-self">Self-Ref</span> <span class="ld-badge">Ld 0.19</span></div>
+        <div class="audio-grid">
+            <div class="audio-col"><div class="label">Source (Dry)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_absolute_20260409_230150/01_source_dry.wav" type="audio/wav"></audio></div>
+            <div class="audio-col"><div class="label">Reference (Dry)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_absolute_20260409_230150/02_reference_dry.wav" type="audio/wav"></audio></div>
+            <div class="audio-col"><div class="label">Target (Ground Truth)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_absolute_20260409_230150/04_target_gt.wav" type="audio/wav"></audio></div>
+            <div class="audio-col"><div class="label">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_absolute_20260409_202601_104841/05_styled_output.wav" type="audio/wav"></audio></div>
+            <div class="audio-col"><div class="label">Reference (Wet)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_absolute_20260409_230150/03_reference_wet.wav" type="audio/wav"></audio></div>
         </div>
     </div>
 
     <!-- ============ Section 2: Oracle (Relative) ============ -->
-    <!-- Example 4: Oracle, Ld=0.46 -->
+    <div class="section-title">Oracle (Relative) — E(B, proc(B))</div>
+
     <div class="demo-card">
-        <div class="demo-song">Example 4 <span class="demo-tag tag-oracle">Oracle</span> <span class="ld-badge">Ld 0.46</span></div>
-        <div class="audio-grid-5">
-            <div class="audio-col">
-                <div class="label">Source (Dry)</div>
-                <div class="sublabel">Clean input</div>
-                <audio controls preload="none"><source src="audio/ex4_source_dry.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Wet)</div>
-                <div class="sublabel">Target effect style</div>
-                <audio controls preload="none"><source src="audio/ex4_reference_wet.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col gt-box">
-                <div class="label">Ground Truth</div>
-                <div class="sublabel">Source + true FX params</div>
-                <audio controls preload="none"><source src="audio/ex4_target_gt.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col highlight-box">
-                <div class="label">Ours</div>
-                <div class="sublabel">Oracle mode</div>
-                <audio controls preload="none"><source src="audio/ex4_styled_output.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Dry)</div>
-                <div class="sublabel">Reference clean signal</div>
-                <audio controls preload="none"><source src="audio/ex4_reference_dry.wav" type="audio/wav"></audio>
-            </div>
+        <div class="demo-song">Example 4 <span class="tag tag-oracle">Oracle</span> <span class="ld-badge">Ld 0.46</span></div>
+        <div class="audio-grid">
+            <div class="audio-col"><div class="label">Source (Dry)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_relative_20260409_191513/01_source_dry.wav" type="audio/wav"></audio></div>
+            <div class="audio-col"><div class="label">Reference (Dry)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_relative_20260409_191513/02_reference_dry.wav" type="audio/wav"></audio></div>
+            <div class="audio-col"><div class="label">Target (Ground Truth)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_relative_20260409_191513/04_target_gt.wav" type="audio/wav"></audio></div>
+            <div class="audio-col"><div class="label">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_relative_20260409_191513/05_styled_output.wav" type="audio/wav"></audio></div>
+            <div class="audio-col"><div class="label">Reference (Wet)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_relative_20260409_191513/03_reference_wet.wav" type="audio/wav"></audio></div>
         </div>
     </div>
 
-    <!-- ============ Section 3: Model Comparison ============ -->
-    <div class="section-title">Model Comparison</div>
-    <p style="margin-bottom:16px; color:#555; font-size:0.9em;">
-        Comparing our method with <strong>Fx-Encoder++</strong> on the same style transfer task.
-        Both models predict FX parameters from the same reference wet signal using the Self-ref (absolute) mode.
-    </p>
+    <!-- ============ Section 3: Standard ============ -->
+    <div class="section-title">Standard — E(A, proc(B))</div>
 
-    <div class="section-title">Oracle Mode</div>
-    <p style="margin-bottom:16px; color:#555; font-size:0.9em;">
-        In Oracle mode, the reference embedding is computed as <strong>E(B, proc(B))</strong> — encoding the <em>transformation</em> applied to the reference signal using both its dry and wet versions.
-        The optimization matches <strong>E(A, Â)</strong> → reference.
-        This leverages the relative distance formulation and achieves better style transfer quality.
-    </p>
+    <!-- ============ Section 4: Comparison ============ -->
+    <div class="section-title">Comparison: Ours vs Baselines</div>
 
-    <!-- Example 5: Compare -->
     <div class="demo-card">
-        <div class="demo-song">Example 5 <span class="demo-tag tag-compare">Comparison</span></div>
-        <div class="audio-grid-6">
-            <div class="audio-col">
-                <div class="label">Source (Dry)</div>
-                <div class="sublabel">Clean input</div>
-                <audio controls preload="none"><source src="audio/ex5_source_dry.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Wet)</div>
-                <div class="sublabel">Target effect style</div>
-                <audio controls preload="none"><source src="audio/ex5_reference_wet.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col gt-box">
-                <div class="label">Ground Truth</div>
-                <div class="sublabel">Source + true FX params</div>
-                <audio controls preload="none"><source src="audio/ex5_target_gt.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col highlight-box">
-                <div class="label">Ours</div>
-                <div class="sublabel">Ld 0.0104</div>
-                <audio controls preload="none"><source src="audio/ex5_ours.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col baseline-box">
-                <div class="label">Fx-Enc++</div>
-                <div class="sublabel">Ld 0.0603</div>
-                <audio controls preload="none"><source src="audio/ex5_fxencpp.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Dry)</div>
-                <div class="sublabel">Reference clean signal</div>
-                <audio controls preload="none"><source src="audio/ex5_reference_dry.wav" type="audio/wav"></audio>
-            </div>
-        </div>
-        <div class="method-desc">
-            Our model achieves lower STFT loss (0.0104) compared to Fx-Encoder++ (0.0603) on this example, producing a result closer to the ground truth.
+        <div class="demo-song">Example 5 <span class="tag tag-compare">Comparison</span></div>
+        <div class="audio-grid">
+            <div class="audio-col"><div class="label">Source</div><audio controls preload="none"><source src="audio/ex5_source_dry.wav" type="audio/wav"></audio></div>
+            <div class="audio-col"><div class="label">Reference (Wet)</div><audio controls preload="none"><source src="audio/ex5_reference_wet.wav" type="audio/wav"></audio></div>
+            <div class="audio-col"><div class="label">Ours</div><audio controls preload="none"><source src="audio/ex5_ours.wav" type="audio/wav"></audio></div>
+            <div class="audio-col"><div class="label">Fx-Encoder++</div><audio controls preload="none"><source src="audio/ex5_fxencpp.wav" type="audio/wav"></audio></div>
         </div>
     </div>
 
 </div>
-
-<footer>
-    Submitted to ISMIR 2026 — Anonymous Submission
-</footer>
-
 </body>
 </html>
-<!-- test push @ Wed Apr 29 11:33:48 CST 2026 -->
