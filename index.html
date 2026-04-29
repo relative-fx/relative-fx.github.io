@@ -99,14 +99,19 @@
             vertical-align: middle;
         }
 
-        .tag-absolute {
+        .tag-self-ref {
             background: #e3f2fd;
             color: #1565c0;
         }
 
-        .tag-relative {
+        .tag-oracle {
             background: #fce4ec;
             color: #c62828;
+        }
+
+        .tag-standard {
+            background: #e8f5e9;
+            color: #2e7d32;
         }
 
         .tag-compare {
@@ -183,6 +188,17 @@
             border-top: 1px solid #eee;
         }
 
+        .ld-badge {
+            display: inline-block;
+            font-size: 0.75em;
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 3px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            margin-left: 6px;
+        }
+
         footer {
             text-align: center;
             padding: 30px 20px;
@@ -221,17 +237,17 @@
         Experiments on effects style transfer demonstrate that our method consistently outperforms existing approaches across all evaluated instrument categories.
     </div>
 
-    <!-- ============ Section 1: Dry-Wet Style Transfer ============ -->
-    <div class="section-title">Effects Style Transfer — Dry/Wet Mode</div>
+    <!-- ============ Section 1: Self-Ref (Absolute) ============ -->
+    <div class="section-title">Self-Reference Mode</div>
     <p style="margin-bottom:16px; color:#555; font-size:0.9em;">
-        Given a <strong>source</strong> dry signal and a <strong>reference</strong> wet signal (with desired effects),
-        the model encodes both and reconstructs the source with the reference's effect style.
-        Ground truth is obtained by applying the reference's true FX parameters to the source.
+        In Self-ref mode, the reference embedding is computed as <strong>E(proc(B), proc(B))</strong> — a "zero-change" encoding of the processed reference signal.
+        The optimization then matches <strong>E(Â, proc(B))</strong> → reference, where Â = FX(A, θ).
+        This mode requires only the wet reference, comparable to prior work.
     </p>
 
-    <!-- Example 1 -->
+    <!-- Example 1: Self-ref, Ld=0.19 -->
     <div class="demo-card">
-        <div class="demo-song">Example 1 — Chorus Section <span class="demo-tag tag-absolute">Dry/Wet</span></div>
+        <div class="demo-song">Example 1 <span class="demo-tag tag-self-ref">Self-Ref</span> <span class="ld-badge">Ld 0.19</span></div>
         <div class="audio-grid-5">
             <div class="audio-col">
                 <div class="label">Source (Dry)</div>
@@ -261,9 +277,9 @@
         </div>
     </div>
 
-    <!-- Example 2 -->
+    <!-- Example 2: Self-ref, Ld=0.24 -->
     <div class="demo-card">
-        <div class="demo-song">Example 2 — Verse Section <span class="demo-tag tag-absolute">Dry/Wet</span></div>
+        <div class="demo-song">Example 2 <span class="demo-tag tag-self-ref">Self-Ref</span> <span class="ld-badge">Ld 0.24</span></div>
         <div class="audio-grid-5">
             <div class="audio-col">
                 <div class="label">Source (Dry)</div>
@@ -293,9 +309,9 @@
         </div>
     </div>
 
-    <!-- Example 3 -->
+    <!-- Example 3: Self-ref, Ld=0.28 -->
     <div class="demo-card">
-        <div class="demo-song">Example 3 — Chorus Section <span class="demo-tag tag-absolute">Dry/Wet</span></div>
+        <div class="demo-song">Example 3 <span class="demo-tag tag-self-ref">Self-Ref</span> <span class="ld-badge">Ld 0.28</span></div>
         <div class="audio-grid-5">
             <div class="audio-col">
                 <div class="label">Source (Dry)</div>
@@ -325,9 +341,17 @@
         </div>
     </div>
 
-    <!-- Example 4 -->
+    <!-- ============ Section 2: Oracle (Relative) ============ -->
+    <div class="section-title">Oracle Mode</div>
+    <p style="margin-bottom:16px; color:#555; font-size:0.9em;">
+        In Oracle mode, the reference embedding is computed as <strong>E(B, proc(B))</strong> — encoding the <em>transformation</em> applied to the reference signal using both its dry and wet versions.
+        The optimization matches <strong>E(A, Â)</strong> → reference.
+        This leverages the relative distance formulation and achieves better style transfer quality.
+    </p>
+
+    <!-- Example 4: Oracle, Ld=0.46 -->
     <div class="demo-card">
-        <div class="demo-song">Example 4 — Chorus Section <span class="demo-tag tag-absolute">Dry/Wet</span></div>
+        <div class="demo-song">Example 4 <span class="demo-tag tag-oracle">Oracle</span> <span class="ld-badge">Ld 0.46</span></div>
         <div class="audio-grid-5">
             <div class="audio-col">
                 <div class="label">Source (Dry)</div>
@@ -346,7 +370,7 @@
             </div>
             <div class="audio-col highlight-box">
                 <div class="label">Ours</div>
-                <div class="sublabel">Predicted FX params</div>
+                <div class="sublabel">Oracle mode</div>
                 <audio controls preload="none"><source src="audio/ex4_styled_output.wav" type="audio/wav"></audio>
             </div>
             <div class="audio-col">
@@ -357,212 +381,46 @@
         </div>
     </div>
 
-    <!-- Example 5 -->
-    <div class="demo-card">
-        <div class="demo-song">Example 5 — Verse Section <span class="demo-tag tag-absolute">Dry/Wet</span></div>
-        <div class="audio-grid-5">
-            <div class="audio-col">
-                <div class="label">Source (Dry)</div>
-                <div class="sublabel">Clean input</div>
-                <audio controls preload="none"><source src="audio/ex7_source_dry.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Wet)</div>
-                <div class="sublabel">Target effect style</div>
-                <audio controls preload="none"><source src="audio/ex7_reference_wet.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col gt-box">
-                <div class="label">Ground Truth</div>
-                <div class="sublabel">Source + true FX params</div>
-                <audio controls preload="none"><source src="audio/ex7_target_gt.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col highlight-box">
-                <div class="label">Ours</div>
-                <div class="sublabel">Predicted FX params</div>
-                <audio controls preload="none"><source src="audio/ex7_styled_output.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Dry)</div>
-                <div class="sublabel">Reference clean signal</div>
-                <audio controls preload="none"><source src="audio/ex7_reference_dry.wav" type="audio/wav"></audio>
-            </div>
-        </div>
-    </div>
-
-    <!-- Example 6 -->
-    <div class="demo-card">
-        <div class="demo-song">Example 6 — Verse Section <span class="demo-tag tag-absolute">Dry/Wet</span></div>
-        <div class="audio-grid-5">
-            <div class="audio-col">
-                <div class="label">Source (Dry)</div>
-                <div class="sublabel">Clean input</div>
-                <audio controls preload="none"><source src="audio/ex8_source_dry.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Wet)</div>
-                <div class="sublabel">Target effect style</div>
-                <audio controls preload="none"><source src="audio/ex8_reference_wet.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col gt-box">
-                <div class="label">Ground Truth</div>
-                <div class="sublabel">Source + true FX params</div>
-                <audio controls preload="none"><source src="audio/ex8_target_gt.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col highlight-box">
-                <div class="label">Ours</div>
-                <div class="sublabel">Predicted FX params</div>
-                <audio controls preload="none"><source src="audio/ex8_styled_output.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Dry)</div>
-                <div class="sublabel">Reference clean signal</div>
-                <audio controls preload="none"><source src="audio/ex8_reference_dry.wav" type="audio/wav"></audio>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============ Section 2: Wet-Wet Style Transfer ============ -->
-    <div class="section-title">Effects Style Transfer — Wet/Wet Mode</div>
-    <p style="margin-bottom:16px; color:#555; font-size:0.9em;">
-        In wet/wet mode, the model receives two already-processed signals and extracts the <em>relative</em> effect difference between them.
-        This eliminates the need for dry references entirely—a key advantage of our framework.
-    </p>
-
-    <!-- Example 9: relative -->
-    <div class="demo-card">
-        <div class="demo-song">Example 9 — Chorus Section <span class="demo-tag tag-relative">Relative</span></div>
-        <div class="audio-grid-5">
-            <div class="audio-col">
-                <div class="label">Source (Dry)</div>
-                <div class="sublabel">Clean input</div>
-                <audio controls preload="none"><source src="audio/ex9_source_dry.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Wet)</div>
-                <div class="sublabel">Target effect style</div>
-                <audio controls preload="none"><source src="audio/ex9_reference_wet.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col gt-box">
-                <div class="label">Ground Truth</div>
-                <div class="sublabel">Source + true FX params</div>
-                <audio controls preload="none"><source src="audio/ex9_target_gt.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col highlight-box">
-                <div class="label">Ours</div>
-                <div class="sublabel">Relative mode</div>
-                <audio controls preload="none"><source src="audio/ex9_styled_output.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Dry)</div>
-                <div class="sublabel">Reference clean signal</div>
-                <audio controls preload="none"><source src="audio/ex9_reference_dry.wav" type="audio/wav"></audio>
-            </div>
-        </div>
-    </div>
-
-    <!-- Example 10: relative -->
-    <div class="demo-card">
-        <div class="demo-song">Example 10 — Verse Section <span class="demo-tag tag-relative">Relative</span></div>
-        <div class="audio-grid-5">
-            <div class="audio-col">
-                <div class="label">Source (Dry)</div>
-                <div class="sublabel">Clean input</div>
-                <audio controls preload="none"><source src="audio/ex10_source_dry.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Wet)</div>
-                <div class="sublabel">Target effect style</div>
-                <audio controls preload="none"><source src="audio/ex10_reference_wet.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col gt-box">
-                <div class="label">Ground Truth</div>
-                <div class="sublabel">Source + true FX params</div>
-                <audio controls preload="none"><source src="audio/ex10_target_gt.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col highlight-box">
-                <div class="label">Ours</div>
-                <div class="sublabel">Relative mode</div>
-                <audio controls preload="none"><source src="audio/ex10_styled_output.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Dry)</div>
-                <div class="sublabel">Reference clean signal</div>
-                <audio controls preload="none"><source src="audio/ex10_reference_dry.wav" type="audio/wav"></audio>
-            </div>
-        </div>
-    </div>
-
-    <!-- Example 11: relative -->
-    <div class="demo-card">
-        <div class="demo-song">Example 11 — Chorus Section <span class="demo-tag tag-relative">Relative</span></div>
-        <div class="audio-grid-5">
-            <div class="audio-col">
-                <div class="label">Source (Dry)</div>
-                <div class="sublabel">Clean input</div>
-                <audio controls preload="none"><source src="audio/ex11_source_dry.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Wet)</div>
-                <div class="sublabel">Target effect style</div>
-                <audio controls preload="none"><source src="audio/ex11_reference_wet.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col gt-box">
-                <div class="label">Ground Truth</div>
-                <div class="sublabel">Source + true FX params</div>
-                <audio controls preload="none"><source src="audio/ex11_target_gt.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col highlight-box">
-                <div class="label">Ours</div>
-                <div class="sublabel">Relative mode</div>
-                <audio controls preload="none"><source src="audio/ex11_styled_output.wav" type="audio/wav"></audio>
-            </div>
-            <div class="audio-col">
-                <div class="label">Reference (Dry)</div>
-                <div class="sublabel">Reference clean signal</div>
-                <audio controls preload="none"><source src="audio/ex11_reference_dry.wav" type="audio/wav"></audio>
-            </div>
-        </div>
-    </div>
-
     <!-- ============ Section 3: Model Comparison ============ -->
     <div class="section-title">Model Comparison</div>
     <p style="margin-bottom:16px; color:#555; font-size:0.9em;">
-        Comparing our method with Fx-Encoder++ on the same style transfer task. Both models predict FX parameters from the same reference wet signal.
+        Comparing our method with <strong>Fx-Encoder++</strong> on the same style transfer task.
+        Both models predict FX parameters from the same reference wet signal using the Self-ref (absolute) mode.
     </p>
 
-    <!-- Example 6 -->
+    <!-- Example 5: Compare -->
     <div class="demo-card">
-        <div class="demo-song">Example 6 — Verse Section <span class="demo-tag tag-compare">Comparison</span></div>
+        <div class="demo-song">Example 5 <span class="demo-tag tag-compare">Comparison</span></div>
         <div class="audio-grid-6">
             <div class="audio-col">
                 <div class="label">Source (Dry)</div>
                 <div class="sublabel">Clean input</div>
-                <audio controls preload="none"><source src="audio/ex6_source_dry.wav" type="audio/wav"></audio>
+                <audio controls preload="none"><source src="audio/ex5_source_dry.wav" type="audio/wav"></audio>
             </div>
             <div class="audio-col">
                 <div class="label">Reference (Wet)</div>
                 <div class="sublabel">Target effect style</div>
-                <audio controls preload="none"><source src="audio/ex6_reference_wet.wav" type="audio/wav"></audio>
+                <audio controls preload="none"><source src="audio/ex5_reference_wet.wav" type="audio/wav"></audio>
             </div>
             <div class="audio-col gt-box">
                 <div class="label">Ground Truth</div>
                 <div class="sublabel">Source + true FX params</div>
-                <audio controls preload="none"><source src="audio/ex6_target_gt.wav" type="audio/wav"></audio>
+                <audio controls preload="none"><source src="audio/ex5_target_gt.wav" type="audio/wav"></audio>
             </div>
             <div class="audio-col highlight-box">
                 <div class="label">Ours</div>
-                <div class="sublabel">Predicted FX params</div>
-                <audio controls preload="none"><source src="audio/ex6_ours.wav" type="audio/wav"></audio>
+                <div class="sublabel">Ld 0.0104</div>
+                <audio controls preload="none"><source src="audio/ex5_ours.wav" type="audio/wav"></audio>
             </div>
             <div class="audio-col baseline-box">
                 <div class="label">Fx-Enc++</div>
-                <div class="sublabel">Predicted FX params</div>
-                <audio controls preload="none"><source src="audio/ex6_fxencpp.wav" type="audio/wav"></audio>
+                <div class="sublabel">Ld 0.0603</div>
+                <audio controls preload="none"><source src="audio/ex5_fxencpp.wav" type="audio/wav"></audio>
             </div>
             <div class="audio-col">
                 <div class="label">Reference (Dry)</div>
                 <div class="sublabel">Reference clean signal</div>
-                <audio controls preload="none"><source src="audio/ex6_reference_dry.wav" type="audio/wav"></audio>
+                <audio controls preload="none"><source src="audio/ex5_reference_dry.wav" type="audio/wav"></audio>
             </div>
         </div>
         <div class="method-desc">
