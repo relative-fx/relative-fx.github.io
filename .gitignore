@@ -1,0 +1,15 @@
+# Binary data files
+*.npy
+*.npz
+
+# System files
+.WeDrive
+.DS_Store
+
+# Backup files
+*.bak
+*.bak-*
+
+# Scripts
+fix_index_v6.py
+insert_standard_section.py

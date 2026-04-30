@@ -4,75 +4,921 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relative-FX: Audio Effects Style Transfer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* ─── CSS Variables ─── */
+        :root {
+            --bg-primary: #08080d;
+            --bg-secondary: #0f0f17;
+            --bg-card: #13131e;
+            --bg-card-hover: #191928;
+            --bg-header: linear-gradient(180deg, #0d0d18 0%, var(--bg-primary) 100%);
+            --text-primary: #eaeaef;
+            --text-secondary: #9494a8;
+            --text-muted: #5c5c72;
+            --accent-self: #4fc3f7;
+            --accent-oracle: #ce93d8;
+            --accent-standard: #ffb74d;
+            --accent-compare: #66bb6a;
+            --accent-self-rgb: 79,195,247;
+            --accent-oracle-rgb: 206,147,216;
+            --accent-standard-rgb: 255,183,77;
+            --accent-compare-rgb: 102,187,106;
+            --accent-self-bg: rgba(79,195,247,0.08);
+            --accent-oracle-bg: rgba(206,147,216,0.08);
+            --accent-standard-bg: rgba(255,183,77,0.08);
+            --accent-compare-bg: rgba(102,187,106,0.08);
+            --border-color: #22223a;
+            --border-light: #1a1a2e;
+            --shadow-card: 0 2px 16px rgba(0,0,0,0.4);
+            --shadow-card-hover: 0 8px 32px rgba(0,0,0,0.6);
+            --radius: 14px;
+            --radius-sm: 8px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", 'Noto Sans SC', sans-serif; background: #0f0f0f; color: #e0e0e0; line-height: 1.6; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        h1 { font-size: 2.2em; margin-bottom: 10px; color: #fff; }
-        .subtitle { color: #aaa; font-size: 0.95em; margin-bottom: 30px; }
-        .section-title { font-size: 1.4em; margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid #333; color: #ddd; }
-        .demo-card { background: #1a1a1a; border-radius: 8px; padding: 15px; margin-bottom: 18px; }
-        .demo-song { font-weight: 600; margin-bottom: 8px; color: #ccc; }
-        .audio-grid { display: flex; gap: 10px; flex-wrap: wrap; }
-        .audio-col { flex: 1 1 180px; min-width: 140px; }
-        .label { font-size: 0.85em; color: #999; margin-bottom: 4px; }
-        audio { width: 100%; }
-        .ld-badge { font-size: 0.8em; color: #6f6; margin-left: 8px; }
-        .tag { font-size: 0.75em; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
-        .tag-self { background: #1a3a5a; color: #a5d6a；}
-        .tag-oracle { background: #2a1a3a; color: #6fa56；}
-        .tag-compare { background: #1a2a5a; color: #56a6a；}
+
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "Helvetica Neue", sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ─── Animated Background ─── */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(var(--accent-self-rgb), 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(var(--accent-oracle-rgb), 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(var(--accent-compare-rgb), 0.03) 0%, transparent 50%);
+            z-index: -1;
+            animation: bgShift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgShift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(3%, 2%); }
+        }
+
+        /* ─── Header ─── */
+        .header {
+            text-align: center;
+            padding: 52px 20px 28px;
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(var(--accent-self-rgb),0.3), rgba(var(--accent-oracle-rgb),0.3), transparent);
+        }
+        .header h1 {
+            font-size: 2.8em;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, var(--accent-self), var(--accent-oracle));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            animation: titlePulse 4s ease-in-out infinite alternate;
+        }
+        @keyframes titlePulse {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.15); }
+        }
+        .header .subtitle {
+            color: var(--text-secondary);
+            font-size: 1em;
+            font-weight: 400;
+        }
+        .header .subtitle a {
+            color: var(--accent-self);
+            text-decoration: none;
+            transition: all var(--transition);
+            border-bottom: 1px solid transparent;
+        }
+        .header .subtitle a:hover {
+            color: var(--accent-oracle);
+            border-bottom-color: var(--accent-oracle);
+        }
+        .header .venue {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.82em;
+            font-weight: 600;
+            background: rgba(var(--accent-self-rgb), 0.1);
+            color: var(--accent-self);
+            border: 1px solid rgba(var(--accent-self-rgb), 0.2);
+            letter-spacing: 0.02em;
+        }
+
+        /* ─── Stats Bar ─── */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            padding: 18px 20px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.6em;
+            font-weight: 700;
+            font-family: "JetBrains Mono", monospace;
+        }
+        .stat-value.self-col { color: var(--accent-self); }
+        .stat-value.oracle-col { color: var(--accent-oracle); }
+        .stat-value.standard-col { color: var(--accent-standard); }
+        .stat-value.compare-col { color: var(--accent-compare); }
+        .stat-label {
+            font-size: 0.78em;
+            color: var(--text-muted);
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* ─── Tab Navigation ─── */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            padding: 24px 20px 0;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 11px 24px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+            font-size: 0.92em;
+            font-weight: 500;
+            transition: all var(--transition);
+            position: relative;
+            user-select: none;
+            font-family: inherit;
+        }
+        .tab-btn:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+        .tab-btn.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-bottom-color: transparent;
+        }
+        .tab-btn[data-mode="self_ref"].active { border-top: 3px solid var(--accent-self); }
+        .tab-btn[data-mode="oracle"].active    { border-top: 3px solid var(--accent-oracle); }
+        .tab-btn[data-mode="standard"].active   { border-top: 3px solid var(--accent-standard); }
+        .tab-btn[data-mode="compare"].active    { border-top: 3px solid var(--accent-compare); }
+
+        .tab-btn .tab-count {
+            display: inline-block;
+            margin-left: 6px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-size: 0.75em;
+            background: var(--border-color);
+            color: var(--text-muted);
+            font-family: "JetBrains Mono", monospace;
+            font-weight: 600;
+        }
+        .tab-btn.active .tab-count { color: var(--text-primary); }
+        .tab-btn[data-mode="self_ref"].active .tab-count  { background: var(--accent-self-bg); }
+        .tab-btn[data-mode="oracle"].active .tab-count    { background: var(--accent-oracle-bg); }
+        .tab-btn[data-mode="standard"].active .tab-count   { background: var(--accent-standard-bg); }
+        .tab-btn[data-mode="compare"].active .tab-count     { background: var(--accent-compare-bg); }
+
+        /* ─── Tab Content ─── */
+        .tab-content-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        .tab-panel {
+            display: none;
+            animation: fadeSlideIn 0.4s ease;
+        }
+        .tab-panel.active { display: block; }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── Section Description ─── */
+        .section-desc {
+            text-align: center;
+            padding: 24px 0 20px;
+            color: var(--text-secondary);
+            font-size: 0.92em;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .section-desc strong { color: var(--text-primary); font-weight: 600; }
+        .section-desc em { font-style: italic; color: var(--accent-self); }
+
+        /* ─── Demo Card ─── */
+        .demo-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 22px 26px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-card);
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .demo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+        .demo-card:hover::before { opacity: 1; }
+        .demo-card.mode-self_ref::before  { background: linear-gradient(90deg, var(--accent-self), transparent); }
+        .demo-card.mode-oracle::before    { background: linear-gradient(90deg, var(--accent-oracle), transparent); }
+        .demo-card.mode-standard::before  { background: linear-gradient(90deg, var(--accent-standard), transparent); }
+        .demo-card.mode-compare::before   { background: linear-gradient(90deg, var(--accent-compare), transparent); }
+
+        .demo-card:hover {
+            box-shadow: var(--shadow-card-hover);
+            background: var(--bg-card-hover);
+            transform: translateY(-3px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .card-title {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-id {
+            font-family: "JetBrains Mono", monospace;
+            font-weight: 500;
+        }
+
+        .tag {
+            font-size: 0.7em;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .tag-self     { background: var(--accent-self-bg);    color: var(--accent-self);    border: 1px solid rgba(var(--accent-self-rgb),0.2); }
+        .tag-oracle   { background: var(--accent-oracle-bg);  color: var(--accent-oracle);  border: 1px solid rgba(var(--accent-oracle-rgb),0.2); }
+        .tag-standard { background: var(--accent-standard-bg); color: var(--accent-standard); border: 1px solid rgba(var(--accent-standard-rgb),0.2); }
+        .tag-compare  { background: var(--accent-compare-bg);  color: var(--accent-compare);  border: 1px solid rgba(var(--accent-compare-rgb),0.2); }
+
+        .ld-badge {
+            font-size: 0.78em;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-family: "JetBrains Mono", monospace;
+        }
+        .ld-badge.good  { background: rgba(var(--accent-compare-rgb),0.1); color: var(--accent-compare); border: 1px solid rgba(var(--accent-compare-rgb),0.2); }
+        .ld-badge.mid   { background: rgba(var(--accent-standard-rgb),0.1); color: var(--accent-standard); border: 1px solid rgba(var(--accent-standard-rgb),0.2); }
+        .ld-badge.high  { background: rgba(255,82,82,0.1); color: #ff5252; border: 1px solid rgba(255,82,82,0.2); }
+
+        /* ─── Audio Grid ─── */
+        .audio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+        }
+        .audio-col {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .audio-label {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+        .audio-label-highlight {
+            color: var(--accent-self);
+            font-weight: 600;
+        }
+        .audio-label-ours {
+            color: var(--accent-compare);
+            font-weight: 600;
+        }
+        .audio-label-fxencpp {
+            color: #ef5350;
+            font-weight: 600;
+        }
+        audio {
+            width: 100%;
+            border-radius: var(--radius-sm);
+            height: 36px;
+            filter: saturate(0.9);
+        }
+
+        /* ─── Comparison Table ─── */
+        .compare-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 16px;
+            font-size: 0.88em;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .compare-table th {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.92em;
+        }
+        .compare-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-primary);
+            font-family: "JetBrains Mono", monospace;
+        }
+        .compare-table tr:last-child td { border-bottom: none; }
+        .compare-winner { color: var(--accent-compare); font-weight: 700; }
+        .compare-loser { color: #ef5350; }
+
+        /* ─── Compare Improvement Badge ─── */
+        .improvement-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.78em;
+            font-weight: 600;
+            font-family: "JetBrains Mono", monospace;
+        }
+        .improvement-positive {
+            background: rgba(var(--accent-compare-rgb),0.12);
+            color: var(--accent-compare);
+            border: 1px solid rgba(var(--accent-compare-rgb),0.25);
+        }
+        .improvement-negative {
+            background: rgba(255,82,82,0.12);
+            color: #ff5252;
+            border: 1px solid rgba(255,82,82,0.25);
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.9em; }
+            .stats-bar { gap: 16px; flex-wrap: wrap; }
+            .stat-value { font-size: 1.3em; }
+        }
+        @media (max-width: 640px) {
+            .header h1 { font-size: 1.5em; }
+            .header { padding: 32px 16px 20px; }
+            .tab-nav { gap: 2px; padding: 16px 12px 0; }
+            .tab-btn { padding: 8px 14px; font-size: 0.85em; }
+            .demo-card { padding: 16px; }
+            .audio-grid { grid-template-columns: 1fr 1fr; }
+            .stats-bar { gap: 12px; padding: 14px 16px; }
+        }
+
+        /* ─── Scrollbar ─── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* ─── Focus Visible ─── */
+        :focus-visible {
+            outline: 2px solid var(--accent-self);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
-<div class="container">
+
+<!-- ═══════════ Header ═══════════ -->
+<div class="header">
     <h1>Relative-FX: Audio Effects Style Transfer</h1>
-    <div class="subtitle">ISMIR 2026 | <a href="https://github.com/relative-fx/relative-fx.github.io" style="color:#6f6;">GitHub</a></div>
+    <div class="subtitle">
+        ISMIR 2026 &nbsp;|&nbsp;
+        <a href="https://github.com/relative-fx/relative-fx.github.io" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="venue">Conference Paper</div>
+</div>
 
-    <!-- ============ Section 1: Self-Ref (Absolute) ============ -->
-    <div class="section-title">Self-Ref (Absolute) — E(proc(B), proc(B))</div>
+<!-- ═══════════ Stats Bar ═══════════ -->
+<div class="stats-bar">
+    <div class="stat-item">
+        <div class="stat-value self-col">6</div>
+        <div class="stat-label">Self-Ref</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value oracle-col">6</div>
+        <div class="stat-label">Oracle</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value standard-col">5</div>
+        <div class="stat-label">Standard</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value compare-col">3</div>
+        <div class="stat-label">Comparison</div>
+    </div>
+</div>
 
-    <div class="demo-card">
-        <div class="demo-song">Example 1 <span class="tag tag-self">Self-Ref</span> <span class="ld-badge">Ld 0.19</span></div>
-        <div class="audio-grid">
-            <div class="audio-col"><div class="label">Source (Dry)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_absolute_20260409_230150/01_source_dry.wav" type="audio/wav"></audio></div>
-            <div class="audio-col"><div class="label">Reference (Dry)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_absolute_20260409_230150/02_reference_dry.wav" type="audio/wav"></audio></div>
-            <div class="audio-col"><div class="label">Target (Ground Truth)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_absolute_20260409_230150/04_target_gt.wav" type="audio/wav"></audio></div>
-            <div class="audio-col"><div class="label">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_absolute_20260409_202601_104841/05_styled_output.wav" type="audio/wav"></audio></div>
-            <div class="audio-col"><div class="label">Reference (Wet)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_absolute_20260409_230150/03_reference_wet.wav" type="audio/wav"></audio></div>
+<!-- ═══════════ Tab Navigation ═══════════ -->
+<div class="tab-nav">
+    <button class="tab-btn active" data-mode="self_ref" onclick="switchTab('self_ref')">
+        Self-Ref (Absolute) <span class="tab-count">6</span>
+    </button>
+    <button class="tab-btn" data-mode="oracle" onclick="switchTab('oracle')">
+        Oracle (Relative) <span class="tab-count">6</span>
+    </button>
+    <button class="tab-btn" data-mode="standard" onclick="switchTab('standard')">
+        Standard <span class="tab-count">5</span>
+    </button>
+    <button class="tab-btn" data-mode="compare" onclick="switchTab('compare')">
+        Comparison <span class="tab-count">3</span>
+    </button>
+</div>
+
+<!-- ═══════════ Tab Content ═══════════ -->
+<div class="tab-content-wrapper">
+
+    <!-- ──────── Self-Ref (Absolute) ──────── -->
+    <div class="tab-panel active" id="panel-self_ref">
+        <div class="section-desc">
+            In <strong>Self-Ref (Absolute)</strong> mode, the reference embedding is <em>E(proc(B), proc(B))</em>,
+            and the optimization matches <em>E(A&#770;, proc(B))</em>. The styled output is generated using the <em>absolute</em> parameterization.
+        </div>
+
+        <div class="demo-card mode-self_ref">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">105840193_2_C1</span> <span class="tag tag-self">Self-Ref</span></div>
+                <span class="ld-badge high">Ld 0.460</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_cascaded-v6_absolute_20260409_225500/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_cascaded-v6_absolute_20260409_225500/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_cascaded-v6_absolute_20260409_225500/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_cascaded-v6_absolute_20260409_225500/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_cascaded-v6_absolute_20260409_225500/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-self_ref">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">107524581_1_V1</span> <span class="tag tag-self">Self-Ref</span></div>
+                <span class="ld-badge good">Ld 0.192</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_cascaded-v6_absolute_20260409_203322/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_cascaded-v6_absolute_20260409_203322/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_cascaded-v6_absolute_20260409_203322/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_cascaded-v6_absolute_20260409_203322/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_cascaded-v6_absolute_20260409_203322/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-self_ref">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">200620605_1_V1</span> <span class="tag tag-self">Self-Ref</span></div>
+                <span class="ld-badge good">Ld 0.321</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_cascaded-v6_absolute_20260409_230150/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_cascaded-v6_absolute_20260409_230150/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_cascaded-v6_absolute_20260409_230150/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_cascaded-v6_absolute_20260409_230150/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_cascaded-v6_absolute_20260409_230150/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-self_ref">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">219755178_2_C1</span> <span class="tag tag-self">Self-Ref</span></div>
+                <span class="ld-badge good">Ld 0.275</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_cascaded-v6_absolute_20260409_224123/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_cascaded-v6_absolute_20260409_224123/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_cascaded-v6_absolute_20260409_224123/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_cascaded-v6_absolute_20260409_224123/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_cascaded-v6_absolute_20260409_224123/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-self_ref">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">5030166_2_C1</span> <span class="tag tag-self">Self-Ref</span></div>
+                <span class="ld-badge good">Ld 0.242</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_cascaded-v6_absolute_20260409_224810/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_cascaded-v6_absolute_20260409_224810/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_cascaded-v6_absolute_20260409_224810/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_cascaded-v6_absolute_20260409_224810/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_cascaded-v6_absolute_20260409_224810/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-self_ref">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">804225_1_V1</span> <span class="tag tag-self">Self-Ref</span></div>
+                <span class="ld-badge mid">Ld 0.416</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_cascaded-v6_absolute_20260409_230839/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_cascaded-v6_absolute_20260409_230839/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_cascaded-v6_absolute_20260409_230839/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_cascaded-v6_absolute_20260409_230839/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_cascaded-v6_absolute_20260409_230839/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
         </div>
     </div>
 
-    <!-- ============ Section 2: Oracle (Relative) ============ -->
-    <div class="section-title">Oracle (Relative) — E(B, proc(B))</div>
+    <!-- ──────── Oracle (Relative) ──────── -->
+    <div class="tab-panel" id="panel-oracle">
+        <div class="section-desc">
+            In <strong>Oracle (Relative)</strong> mode, the reference embedding is <em>E(B, proc(B))</em>,
+            and the optimization matches <em>E(A&#770;, proc(B))</em>. The styled output is generated using the <em>relative</em> parameterization.
+        </div>
 
-    <div class="demo-card">
-        <div class="demo-song">Example 4 <span class="tag tag-oracle">Oracle</span> <span class="ld-badge">Ld 0.46</span></div>
-        <div class="audio-grid">
-            <div class="audio-col"><div class="label">Source (Dry)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_relative_20260409_191513/01_source_dry.wav" type="audio/wav"></audio></div>
-            <div class="audio-col"><div class="label">Reference (Dry)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_relative_20260409_191513/02_reference_dry.wav" type="audio/wav"></audio></div>
-            <div class="audio-col"><div class="label">Target (Ground Truth)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_relative_20260409_191513/04_target_gt.wav" type="audio/wav"></audio></div>
-            <div class="audio-col"><div class="label">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_relative_20260409_191513/05_styled_output.wav" type="audio/wav"></audio></div>
-            <div class="audio-col"><div class="label">Reference (Wet)</div><audio controls preload="none"><source src="audio/104121187_1_V1_cascaded-v6_relative_20260409_191513/03_reference_wet.wav" type="audio/wav"></audio></div>
+        <div class="demo-card mode-oracle">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">104121187_1_V1</span> <span class="tag tag-oracle">Oracle</span></div>
+                <span class="ld-badge high">Ld 0.464</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_cascaded-v6_relative_20260409_191513/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_cascaded-v6_relative_20260409_191513/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_cascaded-v6_relative_20260409_191513/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_cascaded-v6_relative_20260409_191513/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_cascaded-v6_relative_20260409_191513/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-oracle">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">Ex1_101007690_1_V1</span> <span class="tag tag-oracle">Oracle</span></div>
+                <span class="ld-badge high">Ld 0.500</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/oracle/Ex1_101007690_1_V1/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/oracle/Ex1_101007690_1_V1/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/oracle/Ex1_101007690_1_V1/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/oracle/Ex1_101007690_1_V1/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/oracle/Ex1_101007690_1_V1/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-oracle">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">Ex2_105591078_1_V1</span> <span class="tag tag-oracle">Oracle</span></div>
+                <span class="ld-badge high">Ld 0.526</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/oracle/Ex2_105591078_1_V1/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/oracle/Ex2_105591078_1_V1/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/oracle/Ex2_105591078_1_V1/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/oracle/Ex2_105591078_1_V1/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/oracle/Ex2_105591078_1_V1/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-oracle">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">Ex3_105591078_2_C1</span> <span class="tag tag-oracle">Oracle</span></div>
+                <span class="ld-badge high">Ld 0.583</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/oracle/Ex3_105591078_2_C1/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/oracle/Ex3_105591078_2_C1/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/oracle/Ex3_105591078_2_C1/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/oracle/Ex3_105591078_2_C1/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/oracle/Ex3_105591078_2_C1/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-oracle">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">Ex4_105840193_1_V1</span> <span class="tag tag-oracle">Oracle</span></div>
+                <span class="ld-badge high">Ld 0.532</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/oracle/Ex4_105840193_1_V1/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/oracle/Ex4_105840193_1_V1/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/oracle/Ex4_105840193_1_V1/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/oracle/Ex4_105840193_1_V1/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/oracle/Ex4_105840193_1_V1/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-oracle">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">Ex1_105027950_2_C1</span> <span class="tag tag-oracle">Oracle</span></div>
+                <span class="ld-badge high">Ld 0.692</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/oracle/Ex1_105027950_2_C1/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/oracle/Ex1_105027950_2_C1/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/oracle/Ex1_105027950_2_C1/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/oracle/Ex1_105027950_2_C1/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/oracle/Ex1_105027950_2_C1/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
         </div>
     </div>
 
-    <!-- ============ Section 3: Standard ============ -->
-    <div class="section-title">Standard — E(A, proc(B))</div>
+    <!-- ──────── Standard ──────── -->
+    <div class="tab-panel" id="panel-standard">
+        <div class="section-desc">
+            In <strong>Standard</strong> mode, the reference embedding is <em>E(A, proc(B))</em>, and the optimization matches <em>E(A, A&#770;)</em>.
+            This serves as the baseline without style transfer.
+        </div>
 
-    <!-- ============ Section 4: Comparison ============ -->
-    <div class="section-title">Comparison: Ours vs Baselines</div>
+        <div class="demo-card mode-standard">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">Ex1_101804789_1_C1</span> <span class="tag tag-standard">Standard</span></div>
+                <span class="ld-badge high">Ld 0.681</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/standard/Ex1_101804789_1_C1/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/standard/Ex1_101804789_1_C1/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/standard/Ex1_101804789_1_C1/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/standard/Ex1_101804789_1_C1/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-ours">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/standard/Ex1_101804789_1_C1/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
 
-    <div class="demo-card">
-        <div class="demo-song">Example 5 <span class="tag tag-compare">Comparison</span></div>
-        <div class="audio-grid">
-            <div class="audio-col"><div class="label">Source</div><audio controls preload="none"><source src="audio/ex5_source_dry.wav" type="audio/wav"></audio></div>
-            <div class="audio-col"><div class="label">Reference (Wet)</div><audio controls preload="none"><source src="audio/ex5_reference_wet.wav" type="audio/wav"></audio></div>
-            <div class="audio-col"><div class="label">Ours</div><audio controls preload="none"><source src="audio/ex5_ours.wav" type="audio/wav"></audio></div>
-            <div class="audio-col"><div class="label">Fx-Encoder++</div><audio controls preload="none"><source src="audio/ex5_fxencpp.wav" type="audio/wav"></audio></div>
+        <div class="demo-card mode-standard">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">Ex2_107524581_2_C1</span> <span class="tag tag-standard">Standard</span></div>
+                <span class="ld-badge high">Ld 0.619</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/standard/Ex2_107524581_2_C1/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/standard/Ex2_107524581_2_C1/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/standard/Ex2_107524581_2_C1/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/standard/Ex2_107524581_2_C1/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-ours">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/standard/Ex2_107524581_2_C1/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-standard">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">Ex3_213777753_2_C1</span> <span class="tag tag-standard">Standard</span></div>
+                <span class="ld-badge high">Ld 0.684</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/standard/Ex3_213777753_2_C1/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/standard/Ex3_213777753_2_C1/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/standard/Ex3_213777753_2_C1/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/standard/Ex3_213777753_2_C1/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-ours">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/standard/Ex3_213777753_2_C1/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-standard">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">Ex4_221144950_1_V1</span> <span class="tag tag-standard">Standard</span></div>
+                <span class="ld-badge high">Ld 0.629</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/standard/Ex4_221144950_1_V1/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/standard/Ex4_221144950_1_V1/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/standard/Ex4_221144950_1_V1/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/standard/Ex4_221144950_1_V1/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-ours">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/standard/Ex4_221144950_1_V1/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+
+        <div class="demo-card mode-standard">
+            <div class="card-header">
+                <div class="card-title"><span class="card-id">Ex5_2301736_2_C1</span> <span class="tag tag-standard">Standard</span></div>
+                <span class="ld-badge mid">Ld 0.527</span>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/standard/Ex5_2301736_2_C1/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/standard/Ex5_2301736_2_C1/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/standard/Ex5_2301736_2_C1/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/standard/Ex5_2301736_2_C1/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-ours">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/standard/Ex5_2301736_2_C1/05_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ──────── Comparison ──────── -->
+    <div class="tab-panel" id="panel-compare">
+        <div class="section-desc">
+            <strong>Comparison</strong> of our method (cascaded-v6) vs. Fx-Encoder++ on the same audio segments.
+            Both models use the same source and reference; the comparison highlights the difference in style transfer quality.
+        </div>
+
+        <!-- Compare: Ex1_102917121_2_C1 -->
+        <div class="demo-card mode-compare">
+            <div class="card-header">
+                <div class="card-title">
+                    <span class="card-id">Ex1_102917121_2_C1</span>
+                    <span class="tag tag-compare">Comparison</span>
+                    <span class="improvement-badge improvement-positive">&#9650; +0.205</span>
+                </div>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex1_102917121_2_C1/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex1_102917121_2_C1/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex1_102917121_2_C1/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-ours">Ours (cascaded-v6)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex1_102917121_2_C1/05_ours.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-fxencpp">Fx-Encoder++</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex1_102917121_2_C1/06_fxencpp.wav" type="audio/wav"></audio></div>
+            </div>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Ours (cascaded-v6)</th>
+                        <th>Fx-Encoder++</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Our Ld</td>
+                        <td class="compare-winner">0.5880</td>
+                        <td>0.7929</td>
+                    </tr>
+                    <tr>
+                        <td>Improvement</td>
+                        <td class="compare-winner">+0.2049</td>
+                        <td>&#8212;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Compare: Ex2_105840193_2_C1 -->
+        <div class="demo-card mode-compare">
+            <div class="card-header">
+                <div class="card-title">
+                    <span class="card-id">Ex2_105840193_2_C1</span>
+                    <span class="tag tag-compare">Comparison</span>
+                    <span class="improvement-badge improvement-negative">&#9660; -0.149</span>
+                </div>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex2_105840193_2_C1/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex2_105840193_2_C1/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex2_105840193_2_C1/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-ours">Ours (cascaded-v6)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex2_105840193_2_C1/05_ours.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-fxencpp">Fx-Encoder++</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex2_105840193_2_C1/06_fxencpp.wav" type="audio/wav"></audio></div>
+            </div>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Ours (cascaded-v6)</th>
+                        <th>Fx-Encoder++</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Our Ld</td>
+                        <td class="compare-loser">0.6754</td>
+                        <td>0.5262</td>
+                    </tr>
+                    <tr>
+                        <td>Improvement</td>
+                        <td class="compare-loser">-0.1492</td>
+                        <td>&#8212;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Compare: Summary (Different Segments) -->
+        <div class="demo-card mode-compare">
+            <div class="card-header">
+                <div class="card-title">
+                    <span class="card-id">SQ: 495299_1_V1</span>
+                    <span class="tag tag-compare">Comparison</span>
+                    <span class="tag tag-self" style="font-size:0.65em">Different Segments</span>
+                </div>
+            </div>
+            <div class="audio-grid">
+                <div class="audio-col"><div class="audio-label">Source</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare_20260326_173627/_shared/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare_20260326_173627/_shared/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare_20260326_173627/_shared/04_target.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-ours">Ours (cascaded-v6)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare_20260326_173627/cascaded_v4/04_styled_output.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-fxencpp">Fx-Encoder++</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare_20260326_173627/fxencpp/04_styled_output.wav" type="audio/wav"></audio></div>
+            </div>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Ours (cascaded-v6)</th>
+                        <th>Fx-Encoder++</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Active MAE (44)</td>
+                        <td class="compare-winner">0.0521</td>
+                        <td>0.0936</td>
+                    </tr>
+                    <tr>
+                        <td>Overall MAE (47)</td>
+                        <td class="compare-winner">0.0487</td>
+                        <td>0.0876</td>
+                    </tr>
+                    <tr>
+                        <td>STFT Loss</td>
+                        <td class="compare-winner">0.0104</td>
+                        <td>0.0603</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
 </div>
+
+<!-- ═══════════ JavaScript ═══════════ -->
+<script>
+    function switchTab(mode) {
+        // Deactivate all tabs and panels
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+
+        // Activate selected tab and panel
+        const tabBtn = document.querySelector(`.tab-btn[data-mode="${mode}"]`);
+        const panel = document.getElementById(`panel-${mode}`);
+        if (tabBtn) tabBtn.classList.add('active');
+        if (panel) panel.classList.add('active');
+    }
+
+    // Keyboard navigation for tabs
+    document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'AUDIO') return; // Don't interfere with audio players
+        const modes = ['self_ref', 'oracle', 'standard', 'compare'];
+        const currentIdx = modes.findIndex(m =>
+            document.querySelector(`.tab-btn[data-mode="${m}"]`).classList.contains('active')
+        );
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            const dir = e.key === 'ArrowRight' ? 1 : -1;
+            const nextIdx = (currentIdx + dir + modes.length) % modes.length;
+            switchTab(modes[nextIdx]);
+        }
+    });
+</script>
+
 </body>
 </html>

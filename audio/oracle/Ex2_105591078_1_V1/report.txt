@@ -1,0 +1,10 @@
+Batch Demo — relative mode
+==================================================
+SQ: /data2/datasets/SQs/SmartFx/sq_pa/SQ/105591078_1_V1.wav
+Encoder: cascaded-v6
+Mode: relative
+Conservative: True
+Init-zero: False
+Disabled FX: distortion, delay, imager
+Ld (MR-STFT): 0.5258
+Active MAE: 0.2392

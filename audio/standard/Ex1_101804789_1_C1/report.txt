@@ -1,0 +1,10 @@
+Batch Demo — standard mode
+==================================================
+SQ: /data2/datasets/SQs/SmartFx/sq_pa/SQ/101804789_1_C1.wav
+Encoder: cascaded-v6
+Mode: standard
+Conservative: True
+Init-zero: True
+Disabled FX: distortion, delay, imager
+Ld (MR-STFT): 0.6806
+Active MAE: 0.2830

@@ -1,0 +1,6 @@
+Comparison: Ours (cascaded-v6) vs fxencpp
+==================================================
+SQ: /data2/datasets/SQs/SmartFx/sq_pa/SQ/102917121_2_C1.wav
+Our Ld: 0.5880
+fxencpp Ld: 0.7929
+Improvement: +0.2049
