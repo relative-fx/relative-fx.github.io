@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relative-FX: Audio Effects Style Transfer</title>
+    <title>Audio Effects Style Transfer via Relative Feature Encoding</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -449,12 +449,11 @@
 
 <!-- ═══════════ Header ═══════════ -->
 <div class="header">
-    <h1>Relative-FX: Audio Effects Style Transfer</h1>
+    <h1>Audio Effects Style Transfer via Relative Feature Encoding</h1>
     <div class="subtitle">
-        ISMIR 2026 &nbsp;|&nbsp;
-        <a href="https://github.com/relative-fx/relative-fx.github.io" target="_blank" rel="noopener">GitHub</a>
+        Under Review
     </div>
-    <div class="venue">Conference Paper</div>
+    <div class="venue">Anonymous Submission</div>
 </div>
 
 <!-- ═══════════ Stats Bar ═══════════ -->
@@ -509,11 +508,11 @@
                 <span class="ld-badge high">Ld 0.460</span>
             </div>
             <div class="audio-grid">
-                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_cascaded-v6_absolute_20260409_225500/01_source_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_cascaded-v6_absolute_20260409_225500/02_reference_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_cascaded-v6_absolute_20260409_225500/03_reference_wet.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_cascaded-v6_absolute_20260409_225500/04_target_gt.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_cascaded-v6_absolute_20260409_225500/05_styled_output.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_absolute/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_absolute/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_absolute/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_absolute/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/105840193_2_C1_absolute/05_styled_output.wav" type="audio/wav"></audio></div>
             </div>
         </div>
 
@@ -523,11 +522,11 @@
                 <span class="ld-badge good">Ld 0.192</span>
             </div>
             <div class="audio-grid">
-                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_cascaded-v6_absolute_20260409_203322/01_source_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_cascaded-v6_absolute_20260409_203322/02_reference_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_cascaded-v6_absolute_20260409_203322/03_reference_wet.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_cascaded-v6_absolute_20260409_203322/04_target_gt.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_cascaded-v6_absolute_20260409_203322/05_styled_output.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_absolute/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_absolute/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_absolute/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_absolute/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/107524581_1_V1_absolute/05_styled_output.wav" type="audio/wav"></audio></div>
             </div>
         </div>
 
@@ -537,11 +536,11 @@
                 <span class="ld-badge good">Ld 0.321</span>
             </div>
             <div class="audio-grid">
-                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_cascaded-v6_absolute_20260409_230150/01_source_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_cascaded-v6_absolute_20260409_230150/02_reference_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_cascaded-v6_absolute_20260409_230150/03_reference_wet.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_cascaded-v6_absolute_20260409_230150/04_target_gt.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_cascaded-v6_absolute_20260409_230150/05_styled_output.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_absolute/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_absolute/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_absolute/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_absolute/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/200620605_1_V1_absolute/05_styled_output.wav" type="audio/wav"></audio></div>
             </div>
         </div>
 
@@ -551,11 +550,11 @@
                 <span class="ld-badge good">Ld 0.275</span>
             </div>
             <div class="audio-grid">
-                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_cascaded-v6_absolute_20260409_224123/01_source_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_cascaded-v6_absolute_20260409_224123/02_reference_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_cascaded-v6_absolute_20260409_224123/03_reference_wet.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_cascaded-v6_absolute_20260409_224123/04_target_gt.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_cascaded-v6_absolute_20260409_224123/05_styled_output.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_absolute/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_absolute/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_absolute/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_absolute/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/219755178_2_C1_absolute/05_styled_output.wav" type="audio/wav"></audio></div>
             </div>
         </div>
 
@@ -565,11 +564,11 @@
                 <span class="ld-badge good">Ld 0.242</span>
             </div>
             <div class="audio-grid">
-                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_cascaded-v6_absolute_20260409_224810/01_source_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_cascaded-v6_absolute_20260409_224810/02_reference_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_cascaded-v6_absolute_20260409_224810/03_reference_wet.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_cascaded-v6_absolute_20260409_224810/04_target_gt.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_cascaded-v6_absolute_20260409_224810/05_styled_output.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_absolute/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_absolute/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_absolute/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_absolute/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/5030166_2_C1_absolute/05_styled_output.wav" type="audio/wav"></audio></div>
             </div>
         </div>
 
@@ -579,11 +578,11 @@
                 <span class="ld-badge mid">Ld 0.416</span>
             </div>
             <div class="audio-grid">
-                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_cascaded-v6_absolute_20260409_230839/01_source_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_cascaded-v6_absolute_20260409_230839/02_reference_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_cascaded-v6_absolute_20260409_230839/03_reference_wet.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_cascaded-v6_absolute_20260409_230839/04_target_gt.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_cascaded-v6_absolute_20260409_230839/05_styled_output.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_absolute/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_absolute/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_absolute/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_absolute/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/self_ref/804225_1_V1_absolute/05_styled_output.wav" type="audio/wav"></audio></div>
             </div>
         </div>
     </div>
@@ -601,11 +600,11 @@
                 <span class="ld-badge high">Ld 0.464</span>
             </div>
             <div class="audio-grid">
-                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_cascaded-v6_relative_20260409_191513/01_source_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_cascaded-v6_relative_20260409_191513/02_reference_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_cascaded-v6_relative_20260409_191513/03_reference_wet.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_cascaded-v6_relative_20260409_191513/04_target_gt.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_cascaded-v6_relative_20260409_191513/05_styled_output.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_relative/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Dry)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_relative/02_reference_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_relative/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_relative/04_target_gt.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-highlight">Styled Output (Ours)</div><audio controls preload="none"><source src="audio/oracle/104121187_1_V1_relative/05_styled_output.wav" type="audio/wav"></audio></div>
             </div>
         </div>
 
@@ -761,7 +760,7 @@
     <!-- ──────── Comparison ──────── -->
     <div class="tab-panel" id="panel-compare">
         <div class="section-desc">
-            <strong>Comparison</strong> of our method (cascaded-v6) vs. Fx-Encoder++ on the same audio segments.
+            <strong>Comparison</strong> of our method (Proposed) vs. Fx-Encoder++ on the same audio segments.
             Both models use the same source and reference; the comparison highlights the difference in style transfer quality.
         </div>
 
@@ -778,14 +777,14 @@
                 <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex1_102917121_2_C1/01_source_dry.wav" type="audio/wav"></audio></div>
                 <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex1_102917121_2_C1/03_reference_wet.wav" type="audio/wav"></audio></div>
                 <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex1_102917121_2_C1/04_target_gt.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label audio-label-ours">Ours (cascaded-v6)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex1_102917121_2_C1/05_ours.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-ours">Ours (Proposed)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex1_102917121_2_C1/05_ours.wav" type="audio/wav"></audio></div>
                 <div class="audio-col"><div class="audio-label audio-label-fxencpp">Fx-Encoder++</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex1_102917121_2_C1/06_fxencpp.wav" type="audio/wav"></audio></div>
             </div>
             <table class="compare-table">
                 <thead>
                     <tr>
                         <th>Metric</th>
-                        <th>Ours (cascaded-v6)</th>
+                        <th>Ours (Proposed)</th>
                         <th>Fx-Encoder++</th>
                     </tr>
                 </thead>
@@ -817,14 +816,14 @@
                 <div class="audio-col"><div class="audio-label">Source (Dry)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex2_105840193_2_C1/01_source_dry.wav" type="audio/wav"></audio></div>
                 <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex2_105840193_2_C1/03_reference_wet.wav" type="audio/wav"></audio></div>
                 <div class="audio-col"><div class="audio-label">Target (GT)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex2_105840193_2_C1/04_target_gt.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label audio-label-ours">Ours (cascaded-v6)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex2_105840193_2_C1/05_ours.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-ours">Ours (Proposed)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex2_105840193_2_C1/05_ours.wav" type="audio/wav"></audio></div>
                 <div class="audio-col"><div class="audio-label audio-label-fxencpp">Fx-Encoder++</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/Ex2_105840193_2_C1/06_fxencpp.wav" type="audio/wav"></audio></div>
             </div>
             <table class="compare-table">
                 <thead>
                     <tr>
                         <th>Metric</th>
-                        <th>Ours (cascaded-v6)</th>
+                        <th>Ours (Proposed)</th>
                         <th>Fx-Encoder++</th>
                     </tr>
                 </thead>
@@ -853,17 +852,17 @@
                 </div>
             </div>
             <div class="audio-grid">
-                <div class="audio-col"><div class="audio-label">Source</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare_20260326_173627/_shared/01_source_dry.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare_20260326_173627/_shared/03_reference_wet.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label">Target</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare_20260326_173627/_shared/04_target.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label audio-label-ours">Ours (cascaded-v6)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare_20260326_173627/cascaded_v4/04_styled_output.wav" type="audio/wav"></audio></div>
-                <div class="audio-col"><div class="audio-label audio-label-fxencpp">Fx-Encoder++</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare_20260326_173627/fxencpp/04_styled_output.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Source</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare/_shared/01_source_dry.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Reference (Wet)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare/_shared/03_reference_wet.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label">Target</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare/_shared/04_target.wav" type="audio/wav"></audio></div>
+<div class="audio-col"><div class="audio-label audio-label-ours">Ours (Proposed)</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare/proposed/04_styled_output.wav" type="audio/wav"></audio></div>
+                <div class="audio-col"><div class="audio-label audio-label-fxencpp">Fx-Encoder++</div><audio controls preload="none"><source src="audio/compare/vs_fxencpp/compare/fxencpp/04_styled_output.wav" type="audio/wav"></audio></div>
             </div>
             <table class="compare-table">
                 <thead>
                     <tr>
                         <th>Metric</th>
-                        <th>Ours (cascaded-v6)</th>
+                        <th>Ours (Proposed)</th>
                         <th>Fx-Encoder++</th>
                     </tr>
                 </thead>
