@@ -1,0 +1,6 @@
+Comparison: Ours (cascaded-v6) vs st-ito
+==================================================
+SQ: /data2/datasets/SQs/SmartFx/sq_pa/SQ/1255742_2_C1.wav
+Our Ld: 0.6686
+st-ito Ld: 1.8828
+Improvement: +1.2142
