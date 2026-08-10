@@ -5,6 +5,11 @@
 # System files
 .WeDrive
 .DS_Store
+__pycache__/
+*.py[cod]
+
+# Local generation state
+data/optimization-state.json
 
 # Backup files
 *.bak

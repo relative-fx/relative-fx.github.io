@@ -1,0 +1,20 @@
+{
+  "cases": [
+    {
+      "instrument": "drums",
+      "sample_id": 95
+    },
+    {
+      "instrument": "bass",
+      "sample_id": 94
+    },
+    {
+      "instrument": "vocals",
+      "sample_id": 11
+    },
+    {
+      "instrument": "other",
+      "sample_id": 56
+    }
+  ]
+}
