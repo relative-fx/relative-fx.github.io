@@ -648,6 +648,7 @@
 
         .contact a {
             color: var(--accent-dark);
+            overflow-wrap: anywhere;
         }
 
         .citation-heading {
@@ -749,7 +750,8 @@
             }
 
             .nav-links a:nth-child(2),
-            .nav-links a:nth-child(3) {
+            .nav-links a:nth-child(3),
+            .nav-links a:nth-child(4) {
                 display: none;
             }
 
@@ -851,6 +853,7 @@
                     <a href="#method" data-i18n="nav.method">Method</a>
                     <a href="#authors" data-i18n="nav.authors">Authors</a>
                     <a href="#citation" data-i18n="nav.citation">Citation</a>
+                    <a href="https://github.com/TMEGalaxyAudioEffect/relfx-ismir2026-release" target="_blank" rel="noopener noreferrer" aria-label="Open source code on GitHub" data-i18n-aria="nav.githubAria">GitHub</a>
                 </div>
                 <div class="language-switch" role="group" aria-label="Language" data-i18n-aria="language.label">
                     <button class="language-button" type="button" data-language="en" aria-pressed="true">EN</button>
@@ -939,6 +942,7 @@
                     <p class="authors-list">Xinlu Liu · Huibin Lin · Weixing Wei · Zhenhai Yan</p>
                     <p class="affiliations" data-i18n="authors.affiliations">Xinlu Liu, Huibin Lin, and Zhenhai Yan are with the Galaxy Audio Effect Team at Tencent Music Entertainment. Weixing Wei is an independent researcher.</p>
                     <p class="contact"><span data-i18n="authors.contact">Contact:</span> <a href="mailto:fayelliu@163.com">fayelliu@163.com</a></p>
+                    <p class="contact"><span data-i18n="authors.code">Source code:</span> <a href="https://github.com/TMEGalaxyAudioEffect/relfx-ismir2026-release" target="_blank" rel="noopener noreferrer">github.com/TMEGalaxyAudioEffect/relfx-ismir2026-release</a></p>
                 </div>
 
                 <div id="citation">
@@ -977,6 +981,7 @@
                 "nav.method": "Method",
                 "nav.authors": "Authors",
                 "nav.citation": "Citation",
+                "nav.githubAria": "Open source code on GitHub",
                 "language.label": "Language",
                 "hero.paperTitle": "Beyond Dry References: Learning Relative Audio Effects Representations via Contrastive Distance Learning",
                 "hero.summary": "RelFx learns the effect transformation between two audio signals and transfers that transformation to new musical content. This page presents case-matched audio comparisons under the Fx-Encoder++ MUSDB18 protocol.",
@@ -1004,6 +1009,7 @@
                 "authors.heading": "Authors and affiliations",
                 "authors.affiliations": "Xinlu Liu, Huibin Lin, and Zhenhai Yan are with the Galaxy Audio Effect Team at Tencent Music Entertainment. Weixing Wei is an independent researcher.",
                 "authors.contact": "Contact:",
+                "authors.code": "Source code:",
                 "citation.heading": "Citation",
                 "citation.copy": "Copy BibTeX",
                 "citation.copied": "Copied",
@@ -1055,6 +1061,7 @@
                 "nav.method": "方法",
                 "nav.authors": "作者",
                 "nav.citation": "引用",
+                "nav.githubAria": "在 GitHub 查看源代码",
                 "language.label": "语言",
                 "hero.paperTitle": "超越干声参考：通过对比距离学习相对音效表征",
                 "hero.summary": "RelFx 学习两段音频之间的效果变化，并将这种变化迁移到新的音乐内容上。本页按照 Fx-Encoder++ 的 MUSDB18 协议，对相同样例下的不同方法进行音频对比。",
@@ -1082,6 +1089,7 @@
                 "authors.heading": "作者与单位",
                 "authors.affiliations": "Xinlu Liu、Huibin Lin 和 Zhenhai Yan 来自腾讯音乐娱乐集团银河音效团队；Weixing Wei 为独立研究者。",
                 "authors.contact": "联系邮箱：",
+                "authors.code": "源代码：",
                 "citation.heading": "引用",
                 "citation.copy": "复制 BibTeX",
                 "citation.copied": "已复制",
